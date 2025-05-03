@@ -1,55 +1,5 @@
-import pygame
 import random
 import math
-
-# Initialize pygame
-pygame.init()
-
-# Adjustable variables
-SCREEN_WIDTH = 1920  # Width of the screen in pixels
-SCREEN_HEIGHT = 1080  # Height of the screen in pixels
-CELL_SIZE = 8  # Size of each cell in pixels
-MAZE_FILL_PERCENTAGE = 0.8  # Desired maze fill percentage
-NUM_MAZES = 1000  # Number of mazes to overlay
-STOP_COLLISION_PROBABILITY = (
-    0.5  # Probability of stopping if colliding with previous maze
-)
-NUM_ROOMS = 2  # Number of rooms to generate
-ROOM_WIDTH_RANGE = (1, 32)  # Range of room width (min, max)
-ROOM_HEIGHT_RANGE = (1, 32)  # Range of room height (min, max)
-NUM_PILLAR_ROOMS = 1  # Number of rooms with pillars
-PILLAR_ROOM_WIDTH_RANGE = (1, 32)  # Range of pillar room width (min, max)
-PILLAR_ROOM_HEIGHT_RANGE = (1, 32)  # Range of pillar room height (min, max)
-PILLAR_SPACING_RANGE = (2, 6)  # Range of pillar spacing (min, max)
-NUM_CUSTOM_ROOMS = 1  # Number of custom-shaped rooms to generate
-MIN_NUM_SIDES = 2  # Minimum number of sides for a custom room
-MAX_NUM_SIDES = 8  # Maximum number of sides for a custom room
-MIN_CUSTOM_ROOM_RADIUS = 1  # Minimum radius of custom room
-MAX_CUSTOM_ROOM_RADIUS = 16  # Maximum radius of custom room
-
-# Calculate the number of cells in each dimension
-NUM_COLS = SCREEN_WIDTH // CELL_SIZE
-NUM_ROWS = SCREEN_HEIGHT // CELL_SIZE
-
-# Colors
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-
-# Initialize the screen
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("The Backrooms Generator")
-
-
-# Function to draw the maze with paths of different widths
-def draw_maze(maze):
-    for row in maze:
-        for cell in row:
-            x, y, width, visited = cell
-            if visited:
-                pygame.draw.rect(screen, WHITE, (x, y, width, width))
-            else:
-                pygame.draw.rect(screen, BLACK, (x, y, width, width))
-
 
 # Generate a maze using Prim's Algorithm
 def generate_maze(width, height):
@@ -183,27 +133,9 @@ def generate_custom_rooms(maze):
                 if is_inside_custom_room(col, row, vertices):
                     maze[row][col][3] = True
 
-
-# Generate the maze, rooms, rooms with pillars, and custom-shaped rooms
-maze = generate_maze(SCREEN_WIDTH, SCREEN_HEIGHT)
-generate_rooms(maze)
-generate_pillar_rooms(maze)
-generate_custom_rooms(maze)
-
-# Main loop
-running = True
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-        elif event.type == pygame.KEYDOWN and event.key == pygame.K_r:
-            # Regenerate the maze, rooms, and rooms with pillars
-            maze = generate_maze(SCREEN_WIDTH, SCREEN_HEIGHT)
-            generate_rooms(maze)
-            generate_pillar_rooms(maze)
-            generate_custom_rooms(maze)
-
-    draw_maze(maze)
-    pygame.display.flip()
-
-pygame.quit()
+def backrooms(w,h):
+    maze = generate_maze(SCREEN_WIDTH, SCREEN_HEIGHT)
+    generate_rooms(maze)
+    generate_pillar_rooms(maze)
+    generate_custom_rooms(maze)
+    return maze
